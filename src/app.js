@@ -1,25 +1,62 @@
-import React from "react";
+// import React from "react";
+// import { render } from "react-dom";
+// import Pet from "./pet";
+// import SearchParams from "./SearchParams";
+//
+// const App = () => {
+//   return (
+//     //help in legacy code to give warnings in your code, don't use it in new latest javascript as all those warning will be fixed.
+//     <React.StrictMode>
+//       <div>
+//         <h1 id={"something-important"}>Adopt Me!</h1>
+//         <SearchParams />
+//       </div>
+//     </React.StrictMode>
+//   );
+// };
+// render(<App />, document.getElementById("root"));
+
+import { useState, StrictMode } from "react";
 import { render } from "react-dom";
-import Pet from "./pet";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import Details from "./Details";
+import SearchParams from "./SearchParams";
+import ThemeContext from "./ThemeContext";
 
 const App = () => {
-  return React.createElement("div", { id: "something-important" }, [
-    React.createElement("h1", {}, "Adopt Me!"),
-    React.createElement(Pet, {
-      name: "Luna",
-      animal: "Dog",
-      breed: "Havanese",
-    }),
-    React.createElement(Pet, {
-      name: "Pepper",
-      animal: "Bird",
-      breed: "Cockatiel",
-    }),
-    React.createElement(Pet, {
-      name: "Doink",
-      animal: "Cat",
-      breed: "Mixed",
-    }),
-  ]);
+  const theme = useState("darkblue");
+  return (
+    <ThemeContext.Provider value={theme}>
+      <div
+        className="p-0 m-0"
+        style={{
+          background:
+            "url(http://pets-images.dev-apis.com/pets/wallpaperA.jpg)",
+        }}
+      >
+        <Router>
+          <header className="w-full mb-10 text-center p-7 bg-gradient-to-b from-purple-400 via-pink-500 to-red-500">
+            <Link to="/" className="text-6xl text-white hover:text-gray-200">
+              Adopt Me!
+            </Link>
+          </header>
+          <Switch>
+            <Route path="/details/:id">
+              <Details />
+            </Route>
+            <Route path="/">
+              <SearchParams />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
+    </ThemeContext.Provider>
+  );
 };
-render(React.createElement(App), document.getElementById("root"));
+
+render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+  document.getElementById("root")
+);
